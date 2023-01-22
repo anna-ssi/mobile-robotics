@@ -43,8 +43,7 @@ def gst_pipeline_string(mode, exposure='sports'):
 
 
 cap = cv2.VideoCapture()
-cap.open(0)
-# cap.open(gst_pipeline_string(mode=3), cv2.CAP_GSTREAMER)
+cap.open(gst_pipeline_string(mode=3), cv2.CAP_GSTREAMER)
 
 while(True):
     # Capture frame-by-frame
