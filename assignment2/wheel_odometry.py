@@ -19,6 +19,8 @@ class OdometryNode(DTROS):
             node_name=node_name, node_type=NodeType.PERCEPTION)
         self.veh_name = rospy.get_namespace().strip("/")
 
+        # rospy.init_node('LED_color_changer')
+
         # Get static parameters
         self._radius = rospy.get_param(
             f'/{self.veh_name}/kinematics_node/radius')
@@ -95,7 +97,7 @@ class OdometryNode(DTROS):
             return
 
         self.change_led_lights(rgba=(255, 0, 0, 1))
-        
+
         start = time.time()
         end = start
         while not rospy.is_shutdown() and (end - start) < seconds:
@@ -103,11 +105,17 @@ class OdometryNode(DTROS):
             end = time.time()
             print("STOP!")
 
-    def rotate(self, rate, desired_distance, vel_left=0.2, vel_right=-0.2):
-        while not rospy.is_shutdown() and (self.traveled_distance['left'] < desired_distance and
-                                           self.traveled_distance['right'] > -desired_distance):
-            self.move(vel_left=vel_left, vel_right=vel_right)
-            rate.sleep()
+    def rotate(self, rate, desired_distance, vel_left=0.2, vel_right=-0.2, direction=None):
+        if direction is None:
+            while not rospy.is_shutdown() and (self.traveled_distance['left'] < desired_distance and
+                                               self.traveled_distance['right'] > -desired_distance):
+                self.move(vel_left=vel_left, vel_right=vel_right)
+                rate.sleep()
+        else:
+            while not rospy.is_shutdown() and (self.traveled_distance['left'] > -desired_distance and
+                                               self.traveled_distance['right'] < desired_distance):
+                self.move(vel_left=vel_left, vel_right=vel_right)
+                rate.sleep()
 
     def forward(self, rate, desired_distance, vel_left=0.43, vel_right=0.42):
         while not rospy.is_shutdown() and (self.traveled_distance['left'] < desired_distance and
@@ -126,18 +134,21 @@ class OdometryNode(DTROS):
         rate = rospy.Rate(10)
 
         # stop for 5 seconds and change light to red
-        self.stop(seconds=5)
+        # self.stop(seconds=5)
 
         # turning clockwise
-        dis_rot_distance = np.pi * self._baseline / 4
-        self.rotate(rate, dis_rot_distance, vel_left=0.2, vel_right=-0.2)
-
+        dis_rot_distance = np.pi * self._baseline / 2
+        self.rotate(rate, dis_rot_distance, vel_left=0.2, vel_right=0)
         self.stop()
 
         # move forward
-        # self.forward(rate, self.desired_distance, vel_left=0.4, vel_right=0.42)
+        self.forward(rate, self.desired_distance, vel_left=0.4, vel_right=0.42)
 
-        # self.stop()
+        # turning counter-clockwise
+        self.rotate(rate, dis_rot_distance, vel_left=0,
+                    vel_right=0.2, direction='counter')
+
+        self.stop()
 
     def update_coordinates(self):
         delta_theta = (self.d['right'] - self.d['left']) / self._baseline
