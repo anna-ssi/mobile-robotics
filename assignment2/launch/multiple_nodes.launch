@@ -1,0 +1,6 @@
+<launch>
+  <group ns="$(arg veh)">
+    <node pkg="my_package" type="wheel_odometry.py" name="wheel_odometry" output="screen"></node>
+    <node pkg="my_package" type="led_node.py" name="led_node" output="screen"></node>
+  </group> 
+</launch>
