@@ -17,3 +17,14 @@ After activating your LED node, run these commands in sequence.
 dts devel build -f -H [VEHICAL NAME].local
 dts devel run -H [VEHICAL NAME].local
 ```
+
+The code will make a .bag file with the corrdinates of the robot in the world frame.
+First download it from the dashboard and plot the coordinates with these commands:
+```
+virtualenv venv
+source venv/bin/activate
+pip install -r ./requirements.txt
+
+cd [you package path]/src
+python plot.py
+```
