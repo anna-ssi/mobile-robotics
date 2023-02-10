@@ -32,7 +32,7 @@ class LEDNode(DTROS):
 
         # Proxies
         self.setCustomPattern = rospy.ServiceProxy(
-            "/{}/led_emitter_node/set_custom_pattern".format(self.veh_name), SetCustomLEDPattern)
+            f"/{self.veh_name}/led_emitter_node/set_custom_pattern", SetCustomLEDPattern)
 
         # Publishers
         self.pub_leds = rospy.Publisher(
@@ -40,7 +40,7 @@ class LEDNode(DTROS):
 
         # Servers
         self.server = rospy.Service(
-            '/{}/led_node/led_pattern'.format(self.veh_name), ChangePattern, self.handle_change_led_msg)
+            f'/{self.veh_name}/led_node/led_pattern', ChangePattern, self.handle_change_led_msg)
 
         self.colors = {
             "off": [0, 0, 0],
@@ -57,6 +57,8 @@ class LEDNode(DTROS):
     def handle_change_led_msg(self, msg: ChangePattern):
         '''
         Changing the led msg to the one we want to use.
+        Args:
+            msg: the message from the wheel odometry node we created
         '''
         new_msg = LEDPattern()
 
