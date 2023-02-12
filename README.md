@@ -1,6 +1,26 @@
 # CMPUT 503: Experimental Mobile Robotics
 
 ### Assignment 1
+Fork the [template](https://github.com/duckietown/template-basic/) and add the assignemnet 2 folders in the packages folder.
+Change the Dockerfile to your own credentials.
+
+Make a directory packages and make files with the following code:
+```
+mkdir -p ./packages/my_package
+touch ./packages/my_package/__init__.py
+```
+
+Put the my_script.py in the directory and change the ./launchers/default.sh by this:
+```
+dt-exec python3 -m "my_package.my_script"
+```
+
+Build and run the program using:
+```
+dts devel build -f
+dts devel run
+```
+
 
 ### Assignment 2
 Fork the [template](https://github.com/duckietown/template-ros) and add the assignemnet 2 folders in the packages folder.
