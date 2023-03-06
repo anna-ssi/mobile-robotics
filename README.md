@@ -48,3 +48,15 @@ pip install -r ./requirements.txt
 cd [you package path]/src
 python plot.py
 ```
+
+
+### Assignment 3
+Fork the [template](https://github.com/wagonhelm/cmput412_exercise3) and add the assignemnet 3 folders in the packages folder.
+Change the Dockerfile to your own credentials.
+Also change the default.sh file in the launchers folder with one in assignment 3. 
+
+To see your bot in your laptop type the following:
+```
+dts start_gui_tools [BOT].local
+rviz
+```
